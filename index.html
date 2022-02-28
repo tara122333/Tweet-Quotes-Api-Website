@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twitter Quotes Made By Tara</title>
+    <link rel="stylesheet" href="style.css">
+    
+</head>
+<body>
+    <div class="cont flex justify-center items-center w-full h-full">    
+        <div id="container" class="flex bg-blue-600 h-4/6 w-9/12 justify-center items-center my-24 text-black flex-col rounded-lg border-8 border-green-500">
+            <div id="text" class="my-6 px-4 py-4 text-4xl text-white">This is</div>
+            <div id="author" class="my-3 px-2 py-2 text-2xl text-black font-bold">Tara Chand</div>
+            <div class="btn flex justify-center items-center">
+                <button id="button" class="mx-6 my-12 bg-white px-10 py-3 h-14 text-xl hover:bg-amber-200 hover:border-2 hover:border-red-500" >New Quotes</button>
+                <img id="tweet" class="mx-12 my-4 px-7 py-7 w-32 h-32 cursor-pointer" src="tweet.png" alt="tweet-image">
+            </div>
+        </div>
+    </div>
+    <script src="https://kit.fontawesome.com/9c7bf24c28.js" crossorigin="anonymous"></script>
+    <script>
+        const api = "https://type.fit/api/quotes";
+        const text = document.getElementById("text");
+        const author = document.getElementById("author");
+        const button = document.getElementById("button");
+        const tweet = document.getElementById("tweet");
+        
+
+        let realData = "";
+        let index;
+        const getNewQuotes = () =>{
+                index = Math.floor(Math.random()*(api.length));
+                if (realData[index].author == null) {
+                    author.innerHTML = "UnKnown"
+                } else {
+                    author.innerHTML = `Author :- ${realData[index].author}`; 
+                }
+                text.innerHTML = `${realData[index].text}`;
+                
+            }
+            const tweetNow = ()=>{
+                let Twitter = `https://twitter.com/intent/tweet?text=${realData[index].text}, Author :- ${realData[index].author}`;
+                window.open(Twitter);
+            }
+            const getQuote = async () => {
+            try {
+                let data = await fetch(api);
+                realData = await data.json();
+                getNewQuotes();
+                
+            } catch (error) {
+                console.log(`Find error is ${error}`);
+            }
+        }
+        button.addEventListener("click",getNewQuotes);
+        tweet.addEventListener("click",tweetNow);
+        getQuote();
+    </script>
+    
+</body>
+</html>
